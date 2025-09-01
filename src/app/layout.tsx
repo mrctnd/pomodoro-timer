@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
@@ -23,28 +23,34 @@ export const metadata: Metadata = {
     'time management',
   ],
   authors: [{ name: 'Pomodoro App' }],
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f0f0f' },
-  ],
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/icon-192x192.png',
-    shortcut: '/icon-192x192.png',
-    apple: '/icon-192x192.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
+  metadataBase: new URL('https://mrctnd.github.io/pomodoro-timer'),
   openGraph: {
     title: 'Pomodoro Timer - Stay Focused',
     description: 'A modern, minimal Pomodoro timer to boost your productivity',
+    url: 'https://mrctnd.github.io/pomodoro-timer',
+    siteName: 'Pomodoro Timer',
     type: 'website',
-    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Pomodoro Timer - Stay Focused',
     description: 'A modern, minimal Pomodoro timer to boost your productivity',
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f0f0f' },
+  ],
 }
 
 export default function RootLayout({
