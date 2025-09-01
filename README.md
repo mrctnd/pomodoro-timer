@@ -13,33 +13,10 @@ A modern, minimal, and highly usable Pomodoro timer web application built with N
 
 ### Main Timer Interface
 
-![Timer Interface](src/screenshots/timer-focus.png)
-_Clean, minimal timer interface with focus mode_
+![Timer Interface](src/screenshots/screenshot-1.png)
+![Timer Interface](src/screenshots/screenshot-2.png)
+![Timer Interface](src/screenshots/screenshot-3.png)
 
-### Task Management
-
-![Task Management](src/screenshots/tasks.png)
-_Drag-and-drop task management with progress tracking_
-
-### Statistics Dashboard
-
-![Statistics](src/screenshots/stats.png)
-_Detailed analytics with interactive charts_
-
-### Settings Panel
-
-![Settings](src/screenshots/settings.png)
-_Customizable timer durations and preferences_
-
-### Dark Mode
-
-![Dark Mode](src/screenshots/dark-mode.png)
-_Beautiful dark theme with proper contrast_
-
-### Mobile Experience
-
-![Mobile View](src/screenshots/mobile.png)
-_Responsive design optimized for mobile devices_
 
 ## ✨ Features
 
