@@ -29,7 +29,6 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
-  metadataBase: new URL('https://mrctnd.github.io/pomodoro-timer'),
   openGraph: {
     title: 'Pomodoro Timer - Stay Focused',
     description: 'A modern, minimal Pomodoro timer to boost your productivity',
