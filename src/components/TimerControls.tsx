@@ -4,12 +4,19 @@ import { useEffect, useRef } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 import { useAudio } from '@/hooks/useAudio'
 import { useNotifications } from '@/hooks/useNotifications'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { Play, Pause, RotateCcw, Coffee, Clock, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { getTimerModeLabel } from '@/lib/utils'
+import {
+  getTimerModeLabel,
+  getTimerModeColor,
+  getTimerModeGradient,
+} from '@/lib/utils'
+
+const modeConfig = [
+  { mode: 'pomodoro' as const, label: 'Focus', icon: Zap },
+  { mode: 'shortBreak' as const, label: 'Short Break', icon: Coffee },
+  { mode: 'longBreak' as const, label: 'Long Break', icon: Clock },
+]
 
 export function TimerControls() {
   const {
@@ -26,7 +33,6 @@ export function TimerControls() {
   const { showNotification } = useNotifications()
   const prevTimeLeftRef = useRef(timeLeft)
 
-  // Play end sound and show notification when timer reaches 0
   useEffect(() => {
     if (prevTimeLeftRef.current > 0 && timeLeft === 0) {
       playEndSound()
@@ -62,105 +68,88 @@ export function TimerControls() {
     switchMode(mode)
   }
 
+  const modeColor = getTimerModeColor(currentMode)
+  const gradient = getTimerModeGradient(currentMode)
+
   return (
-    <Card className="p-6">
-      <div className="space-y-6">
-        {/* Main Controls */}
-        <div className="flex items-center justify-center gap-4">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              onClick={timerState === 'running' ? handlePause : handleStart}
-              size="lg"
-              className="h-14 px-8 text-lg font-medium"
+    <div className="flex flex-col items-center gap-6">
+      {/* Mode Selector - Pill shaped */}
+      <div className="flex gap-1.5 p-1.5 rounded-full bg-muted/50 backdrop-blur-sm border border-border/50">
+        {modeConfig.map(({ mode, label, icon: Icon }) => {
+          const isActive = currentMode === mode
+          const modeGradient = getTimerModeGradient(mode)
+          return (
+            <button
+              key={mode}
+              onClick={() => handleModeSwitch(mode)}
+              disabled={timerState === 'running'}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                isActive
+                  ? 'text-white shadow-lg'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              style={
+                isActive
+                  ? {
+                      background: `linear-gradient(135deg, ${modeGradient.from}, ${modeGradient.to})`,
+                      boxShadow: `0 4px 20px ${getTimerModeColor(mode)}40`,
+                    }
+                  : undefined
+              }
             >
-              {timerState === 'running' ? (
-                <>
-                  <Pause className="w-5 h-5 mr-2" />
-                  Pause
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5 mr-2" />
-                  {timerState === 'paused' ? 'Resume' : 'Start'}
-                </>
-              )}
-            </Button>
-          </motion.div>
-
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              onClick={handleReset}
-              variant="outline"
-              size="lg"
-              className="h-14 px-6"
-              disabled={timerState === 'idle'}
-            >
-              <RotateCcw className="w-5 h-5 mr-2" />
-              Reset
-            </Button>
-          </motion.div>
-        </div>
-
-        <Separator />
-
-        {/* Mode Selection */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-center text-muted-foreground">
-            Timer Mode
-          </h3>
-          <div className="grid grid-cols-3 gap-2">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                onClick={() => handleModeSwitch('pomodoro')}
-                variant={currentMode === 'pomodoro' ? 'default' : 'outline'}
-                className="w-full"
-                disabled={timerState === 'running'}
-              >
-                <Zap className="w-4 h-4 mr-2" />
-                Focus
-              </Button>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                onClick={() => handleModeSwitch('shortBreak')}
-                variant={currentMode === 'shortBreak' ? 'default' : 'outline'}
-                className="w-full"
-                disabled={timerState === 'running'}
-              >
-                <Coffee className="w-4 h-4 mr-2" />
-                Short
-              </Button>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                onClick={() => handleModeSwitch('longBreak')}
-                variant={currentMode === 'longBreak' ? 'default' : 'outline'}
-                className="w-full"
-                disabled={timerState === 'running'}
-              >
-                <Clock className="w-4 h-4 mr-2" />
-                Long
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Keyboard Shortcuts Hint */}
-        <div className="text-center text-sm text-muted-foreground">
-          <div>
-            Use{' '}
-            <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Space</kbd>{' '}
-            to start/pause
-          </div>
-          <div className="mt-1">
-            Press{' '}
-            <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">?</kbd> for
-            more shortcuts
-          </div>
-        </div>
+              <Icon className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          )
+        })}
       </div>
-    </Card>
+
+      {/* Main Controls */}
+      <div className="flex items-center gap-3">
+        <motion.button
+          onClick={timerState === 'running' ? handlePause : handleStart}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center justify-center w-16 h-16 rounded-full text-white shadow-lg transition-all cursor-pointer"
+          style={{
+            background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`,
+            boxShadow: `0 8px 24px ${modeColor}40`,
+          }}
+        >
+          {timerState === 'running' ? (
+            <Pause className="w-6 h-6" />
+          ) : (
+            <Play className="w-6 h-6 ml-0.5" />
+          )}
+        </motion.button>
+
+        <motion.button
+          onClick={handleReset}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          disabled={timerState === 'idle'}
+          className="flex items-center justify-center w-14 h-14 rounded-full bg-muted/80 hover:bg-muted text-foreground border border-border/50 shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </motion.button>
+      </div>
+
+      {/* Keyboard Shortcuts Hint */}
+      <div className="text-center text-xs text-muted-foreground/70">
+        <span>
+          <kbd className="px-1.5 py-0.5 bg-muted/50 rounded text-[10px] border border-border/30">
+            Space
+          </kbd>{' '}
+          start/pause
+        </span>
+        <span className="mx-2">·</span>
+        <span>
+          <kbd className="px-1.5 py-0.5 bg-muted/50 rounded text-[10px] border border-border/30">
+            ?
+          </kbd>{' '}
+          shortcuts
+        </span>
+      </div>
+    </div>
   )
 }

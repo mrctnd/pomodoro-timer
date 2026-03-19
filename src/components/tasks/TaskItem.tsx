@@ -1,7 +1,6 @@
 'use client'
 
 import { Task } from '@/types'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Check, Trash2, Edit, GripVertical, Target } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -49,88 +48,91 @@ export function TaskItem({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       className={cn(
-        'group flex items-center gap-3 p-3 rounded-lg border transition-all',
-        isDragging && 'shadow-lg z-10',
-        isSelected && 'ring-2 ring-primary',
-        task.completed && 'opacity-60'
+        'group flex items-center gap-3 p-3 rounded-xl border border-border/40 bg-background/50 backdrop-blur-sm transition-all duration-200 hover:border-border/60 hover:bg-background/80',
+        isDragging && 'shadow-xl z-10 border-border',
+        isSelected && 'ring-2 ring-primary/50 border-primary/30 bg-primary/5',
+        task.completed && 'opacity-50'
       )}
     >
+      {/* Drag Handle */}
       <div
         {...attributes}
         {...listeners}
         className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
       >
-        <GripVertical className="w-4 h-4 text-muted-foreground" />
+        <GripVertical className="w-4 h-4 text-muted-foreground/50" />
       </div>
 
-      <Button
+      {/* Checkbox */}
+      <button
         onClick={() => onToggle(task.id)}
-        variant="ghost"
-        size="sm"
-        className="p-0 w-5 h-5 rounded"
+        className={cn(
+          'flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-200',
+          task.completed
+            ? 'bg-green-500/20 border-green-500 text-green-500'
+            : 'border-muted-foreground/30 hover:border-muted-foreground/50'
+        )}
       >
-        <Check
-          className={cn(
-            'w-4 h-4',
-            task.completed ? 'text-green-600' : 'text-muted-foreground'
-          )}
-        />
-      </Button>
+        {task.completed && <Check className="w-3 h-3" />}
+      </button>
 
+      {/* Content */}
       <div className="flex-1 min-w-0">
         <div
           className={cn(
-            'font-medium truncate',
+            'text-sm font-medium truncate',
             task.completed && 'line-through text-muted-foreground'
           )}
         >
           {task.title}
         </div>
         {task.description && (
-          <div className="text-sm text-muted-foreground truncate">
+          <div className="text-xs text-muted-foreground/70 truncate mt-0.5">
             {task.description}
           </div>
         )}
-        <div className="flex items-center gap-2 mt-1">
-          <Badge variant="secondary" className="text-xs">
+        <div className="flex items-center gap-1.5 mt-1">
+          <Badge
+            variant="secondary"
+            className="text-[10px] px-1.5 py-0 h-5 rounded-md bg-muted/50 border border-border/30 font-mono"
+          >
             {task.pomodoroCount}/{task.estimatedPomodoros}
           </Badge>
           {task.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs">
+            <Badge
+              key={tag}
+              variant="outline"
+              className="text-[10px] px-1.5 py-0 h-5 rounded-md"
+            >
               {tag}
             </Badge>
           ))}
         </div>
       </div>
 
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button
+      {/* Actions */}
+      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
           onClick={() => onSelect(task.id)}
-          variant="ghost"
-          size="sm"
           className={cn(
-            'p-1',
-            isSelected && 'bg-primary text-primary-foreground'
+            'p-1.5 rounded-lg transition-all duration-200 hover:bg-muted/80',
+            isSelected && 'bg-primary/10 text-primary'
           )}
         >
-          <Target className="w-4 h-4" />
-        </Button>
-        <Button
+          <Target className="w-3.5 h-3.5" />
+        </button>
+        <button
           onClick={() => onEdit(task)}
-          variant="ghost"
-          size="sm"
-          className="p-1"
+          className="p-1.5 rounded-lg transition-all duration-200 hover:bg-muted/80 text-muted-foreground"
         >
-          <Edit className="w-4 h-4" />
-        </Button>
-        <Button
+          <Edit className="w-3.5 h-3.5" />
+        </button>
+        <button
           onClick={() => onDelete(task.id)}
-          variant="ghost"
-          size="sm"
-          className="p-1 text-destructive hover:text-destructive"
+          className="p-1.5 rounded-lg transition-all duration-200 hover:bg-destructive/10 text-destructive/70 hover:text-destructive"
         >
-          <Trash2 className="w-4 h-4" />
-        </Button>
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
       </div>
     </motion.div>
   )

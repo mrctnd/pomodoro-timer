@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -41,15 +40,19 @@ export function SoundSettingsCard({
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center space-x-2 mb-4">
-        <Volume2 className="w-5 h-5" />
-        <h2 className="text-xl font-semibold">Sound</h2>
+    <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+          <Volume2 className="w-4 h-4 text-emerald-500" />
+        </div>
+        <h2 className="text-lg font-semibold">Sound</h2>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="sound-enabled">Enable sounds</Label>
+      <div className="space-y-5">
+        <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/30">
+          <Label htmlFor="sound-enabled" className="text-sm">
+            Enable sounds
+          </Label>
           <Switch
             id="sound-enabled"
             checked={local.enabled}
@@ -59,8 +62,15 @@ export function SoundSettingsCard({
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="volume">Volume</Label>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="volume" className="text-xs text-muted-foreground">
+              Volume
+            </Label>
+            <span className="text-xs font-mono text-muted-foreground">
+              {Math.round(local.volume * 100)}%
+            </span>
+          </div>
           <Input
             id="volume"
             type="range"
@@ -72,19 +82,17 @@ export function SoundSettingsCard({
               setLocal({ ...local, volume: Number(e.target.value) })
             }
             disabled={!local.enabled}
+            className="accent-emerald-500"
           />
-          <div className="text-sm text-muted-foreground">
-            {Math.round(local.volume * 100)}%
-          </div>
         </div>
       </div>
 
       <div className="flex justify-end mt-6">
-        <Button onClick={handleSave}>
+        <Button onClick={handleSave} className="rounded-xl shadow-sm">
           <Save className="w-4 h-4 mr-2" />
-          Save Sound Settings
+          Save
         </Button>
       </div>
-    </Card>
+    </div>
   )
 }

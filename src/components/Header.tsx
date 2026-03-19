@@ -1,14 +1,33 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { Settings, BarChart3, Focus, Minimize2, Maximize2 } from 'lucide-react'
+import {
+  Settings,
+  BarChart3,
+  Focus,
+  Minimize2,
+  Maximize2,
+  Timer,
+} from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export function Header() {
   const { settings, updateSettings } = usePomodoroStore()
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const toggleFocusMode = () => {
     updateSettings({ focusMode: !settings.focusMode })
@@ -25,7 +44,7 @@ export function Header() {
           onClick={toggleFocusMode}
           variant="outline"
           size="sm"
-          className="bg-background/80 backdrop-blur-sm"
+          className="bg-background/80 backdrop-blur-xl shadow-lg border-border/50 rounded-xl"
         >
           <Maximize2 className="w-4 h-4" />
         </Button>
@@ -33,64 +52,126 @@ export function Header() {
     )
   }
 
+  const navItems = [
+    { href: '/', label: 'Timer', icon: Timer },
+    { href: '/stats', label: 'Stats', icon: BarChart3 },
+  ]
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled ? 'py-2' : 'py-3'
+      }`}
     >
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+      <div className="max-w-5xl mx-auto px-4">
+        <nav
+          className={`relative rounded-2xl transition-all duration-300 ${
+            scrolled
+              ? 'bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg'
+              : 'bg-background/60 backdrop-blur-md border border-border/30 shadow-md'
+          }`}
         >
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Focus className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="font-bold text-lg">Pomodoro</span>
-        </Link>
-
-        <nav className="hidden md:flex items-center space-x-1">
-          <Link href="/">
-            <Button variant="ghost" size="sm">
-              Timer
-            </Button>
-          </Link>
-          <Link href="/stats">
-            <Button variant="ghost" size="sm">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Stats
-            </Button>
-          </Link>
-        </nav>
-
-        <div className="flex items-center space-x-2">
-          <ThemeToggle />
-
-          <Button
-            onClick={toggleFocusMode}
-            variant="ghost"
-            size="sm"
-            title="Focus Mode"
-          >
-            <Minimize2 className="w-4 h-4" />
-          </Button>
-
-          <Link href="/settings">
-            <Button variant="ghost" size="sm">
-              <Settings className="w-4 h-4" />
-            </Button>
-          </Link>
-
-          <div className="md:hidden">
-            <Link href="/stats">
-              <Button variant="ghost" size="sm">
-                <BarChart3 className="w-4 h-4" />
-              </Button>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity"
+            >
+              <div className="w-8 h-8 flex items-center justify-center">
+                <img
+                  src="/logo.png"
+                  alt="Pomodoro Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                Pomodoro
+              </span>
             </Link>
+
+            {/* Center Navigation */}
+            <div className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2">
+              <div className="flex items-center bg-muted/50 rounded-xl p-1">
+                {navItems.map((item) => {
+                  const isActive =
+                    item.href === '/'
+                      ? pathname === '/' || pathname === ''
+                      : pathname?.startsWith(item.href)
+                  return (
+                    <Link key={item.href} href={item.href}>
+                      <button
+                        className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          isActive
+                            ? 'bg-background text-foreground shadow-sm'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        <item.icon className="w-4 h-4" />
+                        {item.label}
+                      </button>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center space-x-1">
+              <ThemeToggle />
+
+              <Button
+                onClick={toggleFocusMode}
+                variant="ghost"
+                size="icon"
+                title="Focus Mode"
+                className="rounded-xl hover:bg-accent/50 transition-all duration-200"
+              >
+                <Minimize2 className="w-4 h-4" />
+              </Button>
+
+              <Link href="/settings">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-xl hover:bg-accent/50 transition-all duration-200"
+                >
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </Link>
+
+              {/* Mobile nav */}
+              <div className="md:hidden flex items-center ml-1">
+                {navItems.map((item) => {
+                  const isActive =
+                    item.href === '/'
+                      ? pathname === '/' || pathname === ''
+                      : pathname?.startsWith(item.href)
+                  return (
+                    <Link key={item.href} href={item.href}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={`rounded-xl transition-all duration-200 ${
+                          isActive
+                            ? 'bg-accent text-foreground'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
+                        <item.icon className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
+
+      {/* Decorative gradient blur */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-24 bg-primary/5 blur-3xl -z-10 rounded-full pointer-events-none" />
     </motion.header>
   )
 }

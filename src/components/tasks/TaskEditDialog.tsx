@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Task } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Dialog,
   DialogContent,
@@ -47,34 +48,53 @@ export function TaskEditDialog({ task, onSave, onClose }: TaskEditDialogProps) {
 
   return (
     <Dialog open={!!task} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
+      <DialogContent className="rounded-2xl border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle className="text-lg">Edit Task</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <Input
-            placeholder="Task title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Input
-            placeholder="Description (optional)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Input
-            type="number"
-            placeholder="Estimated pomodoros"
-            value={estimatedPomodoros}
-            onChange={(e) => setEstimatedPomodoros(Number(e.target.value))}
-            min={1}
-            max={50}
-          />
-          <div className="flex gap-2 justify-end">
-            <Button variant="outline" onClick={onClose}>
+        <div className="space-y-4 pt-2">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
+              Title
+            </Label>
+            <Input
+              placeholder="Task title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="rounded-xl border-border/40 bg-muted/30"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
+              Description
+            </Label>
+            <Input
+              placeholder="Optional description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="rounded-xl border-border/40 bg-muted/30"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
+              Estimated Pomodoros
+            </Label>
+            <Input
+              type="number"
+              value={estimatedPomodoros}
+              onChange={(e) => setEstimatedPomodoros(Number(e.target.value))}
+              min={1}
+              max={50}
+              className="rounded-xl border-border/40 bg-muted/30 w-24"
+            />
+          </div>
+          <div className="flex gap-2 justify-end pt-2">
+            <Button variant="ghost" onClick={onClose} className="rounded-xl">
               Cancel
             </Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleSave} className="rounded-xl shadow-sm">
+              Save Changes
+            </Button>
           </div>
         </div>
       </DialogContent>

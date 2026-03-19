@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -38,15 +37,19 @@ export function NotificationSettingsCard({
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center space-x-2 mb-4">
-        <Bell className="w-5 h-5" />
-        <h2 className="text-xl font-semibold">Notifications</h2>
+    <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center">
+          <Bell className="w-4 h-4 text-purple-500" />
+        </div>
+        <h2 className="text-lg font-semibold">Notifications</h2>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="notifications-enabled">Enable notifications</Label>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/30">
+          <Label htmlFor="notifications-enabled" className="text-sm">
+            Enable notifications
+          </Label>
           <Switch
             id="notifications-enabled"
             checked={local.enabled}
@@ -56,8 +59,10 @@ export function NotificationSettingsCard({
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="desktop-notifications">Desktop notifications</Label>
+        <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/30">
+          <Label htmlFor="desktop-notifications" className="text-sm">
+            Desktop notifications
+          </Label>
           <Switch
             id="desktop-notifications"
             checked={local.desktop}
@@ -70,11 +75,11 @@ export function NotificationSettingsCard({
       </div>
 
       <div className="flex justify-end mt-6">
-        <Button onClick={handleSave}>
+        <Button onClick={handleSave} className="rounded-xl shadow-sm">
           <Save className="w-4 h-4 mr-2" />
-          Save Notification Settings
+          Save
         </Button>
       </div>
-    </Card>
+    </div>
   )
 }

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { TimerSettings } from '@/types'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -42,15 +41,22 @@ export function TimerSettingsCard({
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center space-x-2 mb-4">
-        <Clock className="w-5 h-5" />
-        <h2 className="text-xl font-semibold">Timer</h2>
+    <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
+          <Clock className="w-4 h-4 text-blue-500" />
+        </div>
+        <h2 className="text-lg font-semibold">Timer</h2>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor="pomodoro-duration">Focus Duration (minutes)</Label>
+          <Label
+            htmlFor="pomodoro-duration"
+            className="text-xs text-muted-foreground"
+          >
+            Focus Duration (min)
+          </Label>
           <Input
             id="pomodoro-duration"
             type="number"
@@ -60,11 +66,17 @@ export function TimerSettingsCard({
             onChange={(e) =>
               setLocal({ ...local, pomodoro: Number(e.target.value) })
             }
+            className="rounded-xl border-border/40 bg-muted/30"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="short-break-duration">Short Break (minutes)</Label>
+          <Label
+            htmlFor="short-break-duration"
+            className="text-xs text-muted-foreground"
+          >
+            Short Break (min)
+          </Label>
           <Input
             id="short-break-duration"
             type="number"
@@ -74,11 +86,17 @@ export function TimerSettingsCard({
             onChange={(e) =>
               setLocal({ ...local, shortBreak: Number(e.target.value) })
             }
+            className="rounded-xl border-border/40 bg-muted/30"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="long-break-duration">Long Break (minutes)</Label>
+          <Label
+            htmlFor="long-break-duration"
+            className="text-xs text-muted-foreground"
+          >
+            Long Break (min)
+          </Label>
           <Input
             id="long-break-duration"
             type="number"
@@ -88,13 +106,16 @@ export function TimerSettingsCard({
             onChange={(e) =>
               setLocal({ ...local, longBreak: Number(e.target.value) })
             }
+            className="rounded-xl border-border/40 bg-muted/30"
           />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 mt-6">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="auto-start-breaks">Auto-start breaks</Label>
+        <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/30">
+          <Label htmlFor="auto-start-breaks" className="text-sm">
+            Auto-start breaks
+          </Label>
           <Switch
             id="auto-start-breaks"
             checked={local.autoStartBreaks}
@@ -104,9 +125,9 @@ export function TimerSettingsCard({
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="auto-start-pomodoros">
-            Auto-start focus sessions
+        <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/30">
+          <Label htmlFor="auto-start-pomodoros" className="text-sm">
+            Auto-start focus
           </Label>
           <Switch
             id="auto-start-pomodoros"
@@ -118,9 +139,12 @@ export function TimerSettingsCard({
         </div>
       </div>
 
-      <div className="mt-6">
-        <Label htmlFor="long-break-interval">
-          Long break interval (pomodoros)
+      <div className="mt-6 space-y-2">
+        <Label
+          htmlFor="long-break-interval"
+          className="text-xs text-muted-foreground"
+        >
+          Long break interval
         </Label>
         <Select
           value={local.longBreakInterval.toString()}
@@ -128,7 +152,7 @@ export function TimerSettingsCard({
             setLocal({ ...local, longBreakInterval: Number(value) })
           }
         >
-          <SelectTrigger className="w-full mt-2">
+          <SelectTrigger className="w-full rounded-xl border-border/40 bg-muted/30">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -142,11 +166,11 @@ export function TimerSettingsCard({
       </div>
 
       <div className="flex justify-end mt-6">
-        <Button onClick={handleSave}>
+        <Button onClick={handleSave} className="rounded-xl shadow-sm">
           <Save className="w-4 h-4 mr-2" />
-          Save Timer Settings
+          Save
         </Button>
       </div>
-    </Card>
+    </div>
   )
 }

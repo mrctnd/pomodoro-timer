@@ -3,10 +3,9 @@
 import { useState } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 import { Task } from '@/types'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Target } from 'lucide-react'
-import { AnimatePresence } from 'framer-motion'
+import { Target, ListTodo } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   DndContext,
   closestCenter,
@@ -78,19 +77,32 @@ export function TaskList() {
     }
   }
 
+  const activeCount = tasks.filter((t) => !t.completed).length
+
   return (
-    <Card className="p-6">
-      <div className="space-y-6">
+    <div className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-background via-background to-muted/20 shadow-xl p-6">
+      <div className="space-y-5">
+        {/* Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Tasks</h2>
-          <Badge variant="secondary">
-            {tasks.filter((t) => !t.completed).length} active
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+              <ListTodo className="w-4 h-4 text-primary" />
+            </div>
+            <h2 className="text-lg font-semibold">Tasks</h2>
+          </div>
+          <Badge
+            variant="secondary"
+            className="rounded-full px-3 py-1 text-xs font-medium bg-muted/50 border border-border/30"
+          >
+            {activeCount} active
           </Badge>
         </div>
 
+        {/* Add Form */}
         <TaskAddForm onAdd={handleAddTask} />
 
-        <div className="space-y-2 max-h-96 overflow-y-auto">
+        {/* Task List */}
+        <div className="space-y-1.5 max-h-96 overflow-y-auto pr-1 scrollbar-thin">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -117,10 +129,19 @@ export function TaskList() {
           </DndContext>
 
           {tasks.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <Target className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p>No tasks yet. Add one to get started!</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-12 text-muted-foreground"
+            >
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/30 border border-border/30 flex items-center justify-center">
+                <Target className="w-7 h-7 opacity-40" />
+              </div>
+              <p className="text-sm font-medium">No tasks yet</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">
+                Add a task to get started!
+              </p>
+            </motion.div>
           )}
         </div>
 
@@ -130,6 +151,6 @@ export function TaskList() {
           onClose={() => setEditingTask(null)}
         />
       </div>
-    </Card>
+    </div>
   )
 }

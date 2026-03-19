@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { Download, Upload, RotateCcw } from 'lucide-react'
+import { Download, Upload, RotateCcw, Database } from 'lucide-react'
 import { downloadFile, readFile } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -61,53 +59,58 @@ export function DataManagementCard({
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center space-x-2 mb-4">
-        <Download className="w-5 h-5" />
-        <h2 className="text-xl font-semibold">Data Management</h2>
+    <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="w-8 h-8 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+          <Database className="w-4 h-4 text-cyan-500" />
+        </div>
+        <h2 className="text-lg font-semibold">Data Management</h2>
       </div>
 
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <Button
             onClick={handleExport}
             disabled={isExporting}
             variant="outline"
-            className="flex-1"
+            className="rounded-xl border-border/40 bg-muted/20 hover:bg-muted/40"
           >
             <Download className="w-4 h-4 mr-2" />
-            {isExporting ? 'Exporting...' : 'Export Data'}
+            {isExporting ? 'Exporting...' : 'Export'}
           </Button>
 
           <Button
             onClick={handleImport}
             disabled={isImporting}
             variant="outline"
-            className="flex-1"
+            className="rounded-xl border-border/40 bg-muted/20 hover:bg-muted/40"
           >
             <Upload className="w-4 h-4 mr-2" />
-            {isImporting ? 'Importing...' : 'Import Data'}
+            {isImporting ? 'Importing...' : 'Import'}
           </Button>
         </div>
 
-        <Separator />
-
-        <div className="space-y-2">
-          <h3 className="font-medium text-destructive">Danger Zone</h3>
-          <Button
-            onClick={handleReset}
-            variant="destructive"
-            className="w-full sm:w-auto"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Reset All Settings
-          </Button>
-          <p className="text-sm text-muted-foreground">
-            This will reset all settings to their default values. Your tasks and
-            session data will remain intact.
-          </p>
+        <div className="border-t border-border/30 pt-4">
+          <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
+            <h3 className="text-sm font-medium text-destructive mb-2">
+              Danger Zone
+            </h3>
+            <p className="text-xs text-muted-foreground mb-3">
+              Reset all settings to defaults. Tasks and session data remain
+              intact.
+            </p>
+            <Button
+              onClick={handleReset}
+              variant="destructive"
+              size="sm"
+              className="rounded-xl"
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-2" />
+              Reset Settings
+            </Button>
+          </div>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

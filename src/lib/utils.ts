@@ -35,11 +35,25 @@ export function getTimerModeLabel(mode: TimerMode): string {
 export function getTimerModeColor(mode: TimerMode): string {
   switch (mode) {
     case 'pomodoro':
-      return 'hsl(var(--primary))'
+      return '#ef4444'
     case 'shortBreak':
-      return 'hsl(142 76% 36%)'
+      return '#3b82f6'
     case 'longBreak':
-      return 'hsl(262 83% 58%)'
+      return '#8b5cf6'
+  }
+}
+
+export function getTimerModeGradient(mode: TimerMode): {
+  from: string
+  to: string
+} {
+  switch (mode) {
+    case 'pomodoro':
+      return { from: '#ef4444', to: '#dc2626' }
+    case 'shortBreak':
+      return { from: '#3b82f6', to: '#2563eb' }
+    case 'longBreak':
+      return { from: '#8b5cf6', to: '#7c3aed' }
   }
 }
 
