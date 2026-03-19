@@ -99,40 +99,55 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div
+      className={`max-w-6xl mx-auto px-4 transition-all duration-700 ease-in-out ${
+        isRunning
+          ? 'flex items-center justify-center min-h-[calc(100vh-5rem)]'
+          : 'py-8'
+      }`}
+    >
       <motion.div
+        layout
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="space-y-8"
+        className={
+          isRunning
+            ? 'flex flex-col items-center justify-center w-full'
+            : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full items-start'
+        }
       >
-        {/* Timer Section - Centered */}
-        <div className="flex justify-center">
+        {/* Left Column (Timer & Stats) */}
+        <motion.div
+          layout
+          className={
+            isRunning
+              ? ''
+              : 'lg:col-span-7 flex flex-col items-center w-full space-y-8 lg:mt-4'
+          }
+        >
+          {/* Timer Section */}
           <motion.div
             layout
-            className="flex flex-col items-center gap-6 transition-all duration-500"
-            animate={{
-              scale: isRunning ? 1.05 : 1,
-              marginTop: isRunning ? '10vh' : '0',
-            }}
+            className="flex flex-col items-center gap-6 w-full"
+            animate={{ scale: isRunning ? 1.05 : 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           >
             <Timer />
             <TimerControls />
           </motion.div>
-        </div>
 
-        <AnimatePresence mode="wait">
-          {!isRunning && (
-            <motion.div
-              key="quick-stats-and-tasks"
-              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-              animate={{ opacity: 1, height: 'auto', overflow: 'visible' }}
-              exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="space-y-8"
-            >
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto">
+          {/* Quick Stats */}
+          <AnimatePresence mode="wait">
+            {!isRunning && (
+              <motion.div
+                key="quick-stats"
+                initial={{ opacity: 0, height: 0, y: -20 }}
+                animate={{ opacity: 1, height: 'auto', y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -20, overflow: 'hidden' }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-3 gap-3 w-full max-w-lg"
+              >
                 {quickStats.map((stat) => (
                   <div
                     key={stat.key}
@@ -151,10 +166,24 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
-              </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
-              {/* Task List */}
-              <div className="max-w-2xl mx-auto">
+        {/* Right Column (Task List) */}
+        <AnimatePresence mode="wait">
+          {!isRunning && (
+            <motion.div
+              layout
+              key="task-list-col"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.4 }}
+              className="lg:col-span-5 w-full"
+            >
+              <div className="sticky top-24">
                 <TaskList />
               </div>
             </motion.div>

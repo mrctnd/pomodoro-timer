@@ -13,6 +13,7 @@ import {
   Timer,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -89,14 +90,13 @@ export function Header() {
                 href="/"
                 className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity"
               >
-                <div className="w-8 h-8 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/logo.svg"
-                    alt="Pomodoro Logo"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+                <Image
+                  src="/logo.svg"
+                  alt="Pomodoro Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
                 <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                   Pomodoro
                 </span>
