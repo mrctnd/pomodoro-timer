@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Pomodoro App' }],
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
   },
   openGraph: {
     title: 'Pomodoro Timer - Stay Focused',
