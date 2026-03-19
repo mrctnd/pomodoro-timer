@@ -1,6 +1,6 @@
 # 🍅 Pomodoro Timer - Stay Focused
 
-A modern, minimal, and highly usable Pomodoro timer web application built with Next.js 14, TypeScript, and Tailwind CSS. Features task management, detailed statistics, PWA support, and full accessibility compliance.
+A modern, minimal, and highly usable Pomodoro timer web application built with Next.js 15, TypeScript, and Tailwind CSS v4. Features task management, detailed statistics, PWA support, and full accessibility compliance.
 
 > 🤖 **Built with AI**: This project was developed using GitHub Copilot and AI assistance to demonstrate modern web development practices and create a production-ready application.
 
@@ -18,7 +18,6 @@ A modern, minimal, and highly usable Pomodoro timer web application built with N
 ![Timer Interface](src/screenshots/screenshot-1.png)
 ![Timer Interface](src/screenshots/screenshot-2.png)
 ![Timer Interface](src/screenshots/screenshot-3.png)
-
 
 ## ✨ Features
 
@@ -117,21 +116,42 @@ src/
 │   ├── settings/          # Settings page
 │   └── stats/             # Statistics dashboard
 ├── components/            # Reusable UI components
-│   ├── ui/                # shadcn/ui components
+│   ├── ui/                # shadcn/ui components (Radix primitives)
+│   ├── tasks/             # Task-related components
+│   │   ├── TaskItem.tsx   # Sortable drag-and-drop task row
+│   │   ├── TaskAddForm.tsx # New task input form
+│   │   └── TaskEditDialog.tsx # Edit task dialog (shadcn Dialog)
+│   ├── settings/          # Settings section cards
+│   │   ├── TimerSettingsCard.tsx
+│   │   ├── SoundSettingsCard.tsx
+│   │   ├── NotificationSettingsCard.tsx
+│   │   ├── AppearanceSettingsCard.tsx
+│   │   └── DataManagementCard.tsx
 │   ├── Header.tsx         # Navigation header
 │   ├── Timer.tsx          # Main timer display
 │   ├── TimerControls.tsx  # Start/pause/reset controls
-│   ├── TaskList.tsx       # Task management interface
-│   └── ThemeProvider.tsx  # Theme context provider
+│   ├── TaskList.tsx       # Task list with DnD context
+│   ├── ThemeProvider.tsx  # Theme context provider
+│   └── ThemeToggle.tsx    # Dark/light mode toggle
+├── constants/             # Application constants
+│   └── index.ts           # Default settings, chart colors, etc.
 ├── hooks/                 # Custom React hooks
 │   ├── useAudio.ts        # Audio feedback system
 │   ├── useKeyboardShortcuts.ts  # Keyboard navigation
-│   └── useNotifications.ts     # Browser notifications
+│   ├── useNotifications.ts     # Browser notifications
+│   └── useStatsData.ts   # Statistics data computations
 ├── lib/                   # Utility functions
-│   ├── database.ts        # IndexedDB & localStorage utils
+│   ├── database.ts        # IndexedDB via Dexie
+│   ├── storage.ts         # localStorage utilities
 │   └── utils.ts           # Helper functions
-├── store/                 # State management
-│   └── usePomodoro.ts     # Zustand store
+├── store/                 # State management (Zustand)
+│   ├── slices/            # Store slices
+│   │   ├── timerSlice.ts  # Timer state & actions
+│   │   ├── taskSlice.ts   # Task CRUD operations
+│   │   ├── settingsSlice.ts # App settings
+│   │   ├── sessionSlice.ts  # Pomodoro session recording
+│   │   └── statsSlice.ts # Stats calculation & data loading
+│   └── usePomodoro.ts     # Composed store
 ├── types/                 # TypeScript definitions
 │   └── index.ts           # Application types
 └── test/                  # Test setup and utilities
@@ -147,21 +167,19 @@ src/
 | `pnpm start`    | Start production server   |
 | `pnpm lint`     | Run ESLint                |
 | `pnpm lint:fix` | Fix ESLint errors         |
-| `pnpm test`     | Run tests with Vitest     |
+| `pnpm test`     | Run tests (watch mode)    |
+| `pnpm test:run` | Run tests once            |
 | `pnpm test:ui`  | Run tests with UI         |
 | `pnpm format`   | Format code with Prettier |
 
 ## 🧪 Testing
 
 ```bash
-# Run all tests
+# Run all tests (watch mode)
 pnpm test
 
-# Run tests in watch mode
-pnpm test:watch
-
-# Run tests with coverage
-pnpm test:coverage
+# Run tests once
+pnpm test:run
 
 # Run tests with UI
 pnpm test:ui
@@ -183,7 +201,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### Customization
 
-- **Timer Durations**: Modify default values in `src/store/usePomodoro.ts`
+- **Timer Durations**: Modify default values in `src/constants/index.ts`
 - **Themes**: Update CSS variables in `src/app/globals.css`
 - **Audio**: Replace sound files in `src/hooks/useAudio.ts`
 - **PWA**: Configure manifest in `public/manifest.webmanifest`
@@ -192,7 +210,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### Core Framework
 
-- **Next.js 14**: React framework with App Router
+- **Next.js 15**: React framework with App Router
 - **TypeScript**: Type-safe JavaScript
 - **Tailwind CSS**: Utility-first CSS framework
 

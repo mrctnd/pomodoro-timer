@@ -10,19 +10,10 @@ import {
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
 
 export function Timer() {
-  const { currentMode, timeLeft, timerState, settings } = usePomodoroStore()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
+  const { currentMode, timeLeft, timerState, settings, stats } =
+    usePomodoroStore()
 
   const totalTime = settings.timer[currentMode] * 60
   const progress = calculateProgress(timeLeft, totalTime)
@@ -49,7 +40,6 @@ export function Timer() {
             className="w-full h-full transform -rotate-90"
             viewBox="0 0 100 100"
           >
-            {/* Background circle */}
             <circle
               cx="50"
               cy="50"
@@ -58,7 +48,6 @@ export function Timer() {
               stroke="hsl(var(--muted))"
               strokeWidth="2"
             />
-            {/* Progress circle */}
             <motion.circle
               cx="50"
               cy="50"
@@ -77,7 +66,6 @@ export function Timer() {
             />
           </svg>
 
-          {/* Timer display */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               key={`${timeLeft}-${currentMode}`}
@@ -111,7 +99,7 @@ export function Timer() {
 
         {/* Session Info */}
         <div className="text-sm text-muted-foreground space-y-1">
-          <div>Session {Math.floor((totalTime - timeLeft) / 60) + 1}</div>
+          <div>Session {stats.completedPomodoros + 1}</div>
           {timerState === 'running' && (
             <motion.div
               initial={{ opacity: 0 }}

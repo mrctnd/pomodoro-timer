@@ -29,10 +29,9 @@ export const dbUtils = {
     }
   },
 
-  async addTask(task: Omit<Task, 'id'>): Promise<string> {
+  async addTask(task: Task): Promise<void> {
     try {
-      const id = await db.tasks.add({ ...task, id: crypto.randomUUID() })
-      return id as string
+      await db.tasks.add(task)
     } catch (error) {
       console.error('Failed to add task:', error)
       throw error
@@ -93,22 +92,13 @@ export const dbUtils = {
     }
   },
 
-  async updateSession(
-    id: string,
-    updates: Partial<PomodoroSession>
-  ): Promise<void> {
-    try {
-      await db.sessions.update(id, updates)
-    } catch (error) {
-      console.error('Failed to update session:', error)
-      throw error
-    }
-  },
-
   async getSettings(): Promise<AppSettings | null> {
     try {
       const settings = await db.settings.limit(1).first()
-      return settings ? { ...settings } : null
+      if (!settings) return null
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id: _, ...rest } = settings
+      return rest as AppSettings
     } catch (error) {
       console.error('Failed to get settings:', error)
       return null
@@ -184,34 +174,6 @@ export const dbUtils = {
     } catch (error) {
       console.error('Failed to import data:', error)
       throw error
-    }
-  },
-}
-
-// Fallback localStorage utilities
-export const localStorageUtils = {
-  getItem<T>(key: string, defaultValue: T): T {
-    try {
-      const item = localStorage.getItem(key)
-      return item ? JSON.parse(item) : defaultValue
-    } catch {
-      return defaultValue
-    }
-  },
-
-  setItem<T>(key: string, value: T): void {
-    try {
-      localStorage.setItem(key, JSON.stringify(value))
-    } catch (error) {
-      console.error('Failed to save to localStorage:', error)
-    }
-  },
-
-  removeItem(key: string): void {
-    try {
-      localStorage.removeItem(key)
-    } catch (error) {
-      console.error('Failed to remove from localStorage:', error)
     }
   },
 }

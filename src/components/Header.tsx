@@ -6,19 +6,15 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { Settings, BarChart3, Focus, Minimize2, Maximize2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useState } from 'react'
 
 export function Header() {
   const { settings, updateSettings } = usePomodoroStore()
-  const [isMinimized, setIsMinimized] = useState(false)
 
   const toggleFocusMode = () => {
-    const newFocusMode = !settings.focusMode
-    updateSettings({ focusMode: newFocusMode })
-    setIsMinimized(newFocusMode)
+    updateSettings({ focusMode: !settings.focusMode })
   }
 
-  if (isMinimized || settings.focusMode) {
+  if (settings.focusMode) {
     return (
       <motion.header
         initial={{ y: -100 }}
@@ -44,7 +40,6 @@ export function Header() {
       className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
         <Link
           href="/"
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
@@ -55,7 +50,6 @@ export function Header() {
           <span className="font-bold text-lg">Pomodoro</span>
         </Link>
 
-        {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
           <Link href="/">
             <Button variant="ghost" size="sm">
@@ -70,7 +64,6 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Actions */}
         <div className="flex items-center space-x-2">
           <ThemeToggle />
 
@@ -89,7 +82,6 @@ export function Header() {
             </Button>
           </Link>
 
-          {/* Mobile Navigation */}
           <div className="md:hidden">
             <Link href="/stats">
               <Button variant="ghost" size="sm">

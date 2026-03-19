@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 import { useAudio } from '@/hooks/useAudio'
 import { useNotifications } from '@/hooks/useNotifications'
@@ -14,14 +15,28 @@ export function TimerControls() {
   const {
     timerState,
     currentMode,
+    timeLeft,
     startTimer,
     pauseTimer,
     resetTimer,
     switchMode,
   } = usePomodoroStore()
 
-  const { playStartSound, playClickSound } = useAudio()
+  const { playStartSound, playClickSound, playEndSound } = useAudio()
   const { showNotification } = useNotifications()
+  const prevTimeLeftRef = useRef(timeLeft)
+
+  // Play end sound and show notification when timer reaches 0
+  useEffect(() => {
+    if (prevTimeLeftRef.current > 0 && timeLeft === 0) {
+      playEndSound()
+      showNotification({
+        title: `${getTimerModeLabel(currentMode)} Complete!`,
+        body: 'Time for the next session.',
+      })
+    }
+    prevTimeLeftRef.current = timeLeft
+  }, [timeLeft, currentMode, playEndSound, showNotification])
 
   const handleStart = () => {
     playStartSound()
@@ -132,7 +147,7 @@ export function TimerControls() {
           </div>
         </div>
 
-        {/* Quick Stats */}
+        {/* Keyboard Shortcuts Hint */}
         <div className="text-center text-sm text-muted-foreground">
           <div>
             Use{' '}

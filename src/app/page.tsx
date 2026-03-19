@@ -3,8 +3,10 @@
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { usePomodoroStore } from '@/store/usePomodoro'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { formatDuration } from '@/lib/utils'
 
-// Dynamically import components to avoid SSR issues
 const Timer = dynamic(
   () => import('@/components/Timer').then((mod) => ({ default: mod.Timer })),
   {
@@ -35,6 +37,9 @@ const TaskList = dynamic(
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
+  const stats = usePomodoroStore((state) => state.stats)
+
+  useKeyboardShortcuts()
 
   useEffect(() => {
     setMounted(true)
@@ -77,7 +82,7 @@ export default function Home() {
           <motion.div layout className="lg:col-span-1 space-y-6">
             <TimerControls />
 
-            {/* Quick Stats - Simple placeholders for now */}
+            {/* Quick Stats */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -85,15 +90,21 @@ export default function Home() {
               className="grid grid-cols-3 gap-4 text-center"
             >
               <div className="bg-card p-4 rounded-lg border">
-                <div className="text-2xl font-bold text-primary">0</div>
+                <div className="text-2xl font-bold text-primary">
+                  {stats.completedPomodoros}
+                </div>
                 <div className="text-sm text-muted-foreground">Sessions</div>
               </div>
               <div className="bg-card p-4 rounded-lg border">
-                <div className="text-2xl font-bold text-primary">0h</div>
+                <div className="text-2xl font-bold text-primary">
+                  {formatDuration(stats.totalFocusTime)}
+                </div>
                 <div className="text-sm text-muted-foreground">Focus Time</div>
               </div>
               <div className="bg-card p-4 rounded-lg border">
-                <div className="text-2xl font-bold text-primary">0</div>
+                <div className="text-2xl font-bold text-primary">
+                  {stats.streak}
+                </div>
                 <div className="text-sm text-muted-foreground">Day Streak</div>
               </div>
             </motion.div>

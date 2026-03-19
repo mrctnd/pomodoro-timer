@@ -1,6 +1,5 @@
 'use client'
 
-import { usePomodoroStore } from '@/store/usePomodoro'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
@@ -21,118 +20,11 @@ import {
   Cell,
 } from 'recharts'
 import { Clock, Target, Zap, TrendingUp, CheckCircle } from 'lucide-react'
-import { useMemo } from 'react'
-import {
-  format,
-  subDays,
-  startOfDay,
-  endOfDay,
-  eachDayOfInterval,
-} from 'date-fns'
-
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+import { useStatsData } from '@/hooks/useStatsData'
 
 export default function StatsPage() {
-  const { sessions, tasks, stats } = usePomodoroStore()
-
-  // Calculate daily stats for the last 30 days
-  const dailyStats = useMemo(() => {
-    const last30Days = eachDayOfInterval({
-      start: subDays(new Date(), 29),
-      end: new Date(),
-    })
-
-    return last30Days.map((day) => {
-      const dayStart = startOfDay(day)
-      const dayEnd = endOfDay(day)
-
-      const daySessions = sessions.filter(
-        (session) =>
-          session.completed &&
-          session.startTime >= dayStart.getTime() &&
-          session.startTime <= dayEnd.getTime()
-      )
-
-      const pomodoroSessions = daySessions.filter((s) => s.mode === 'pomodoro')
-
-      return {
-        date: format(day, 'MMM dd'),
-        fullDate: day,
-        sessions: pomodoroSessions.length,
-        focusTime: pomodoroSessions.reduce(
-          (total, session) => total + session.duration,
-          0
-        ),
-      }
-    })
-  }, [sessions])
-
-  // Calculate weekly stats
-  const weeklyStats = useMemo(() => {
-    const weeks = []
-    for (let i = 0; i < 12; i++) {
-      const weekEnd = subDays(new Date(), i * 7)
-      const weekStart = subDays(weekEnd, 6)
-
-      const weekSessions = sessions.filter(
-        (session) =>
-          session.completed &&
-          session.mode === 'pomodoro' &&
-          session.startTime >= startOfDay(weekStart).getTime() &&
-          session.startTime <= endOfDay(weekEnd).getTime()
-      )
-
-      weeks.unshift({
-        week: `${format(weekStart, 'MMM dd')} - ${format(weekEnd, 'MMM dd')}`,
-        sessions: weekSessions.length,
-        focusTime: weekSessions.reduce(
-          (total, session) => total + session.duration,
-          0
-        ),
-      })
-    }
-    return weeks
-  }, [sessions])
-
-  // Task completion stats
-  const taskStats = useMemo(() => {
-    const taskData = tasks
-      .map((task) => ({
-        name:
-          task.title.length > 20
-            ? task.title.substring(0, 20) + '...'
-            : task.title,
-        pomodoros: task.pomodoroCount,
-        completed: task.completed,
-      }))
-      .sort((a, b) => b.pomodoros - a.pomodoros)
-      .slice(0, 10)
-
-    return taskData
-  }, [tasks])
-
-  // Mode distribution
-  const modeStats = useMemo(() => {
-    const modeCount = sessions.reduce(
-      (acc, session) => {
-        if (session.completed) {
-          acc[session.mode] = (acc[session.mode] || 0) + 1
-        }
-        return acc
-      },
-      {} as Record<string, number>
-    )
-
-    return [
-      { name: 'Focus', value: modeCount.pomodoro || 0, color: COLORS[0] },
-      {
-        name: 'Short Break',
-        value: modeCount.shortBreak || 0,
-        color: COLORS[1],
-      },
-      { name: 'Long Break', value: modeCount.longBreak || 0, color: COLORS[2] },
-    ].filter((item) => item.value > 0)
-  }, [sessions])
+  const { stats, tasks, dailyStats, weeklyStats, taskStats, modeStats } =
+    useStatsData()
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">

@@ -1,22 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 
-interface AudioHookReturn {
-  playStartSound: () => void
-  playEndSound: () => void
-  playClickSound: () => void
-  setVolume: (volume: number) => void
-}
-
-export function useAudio(): AudioHookReturn {
+export function useAudio() {
   const settings = usePomodoroStore((state) => state.settings)
   const audioContextRef = useRef<AudioContext | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         audioContextRef.current = new (window.AudioContext ||
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).webkitAudioContext)()
       } catch (error) {
         console.error('Failed to create audio context:', error)
@@ -62,37 +55,23 @@ export function useAudio(): AudioHookReturn {
   }
 
   const playStartSound = () => {
-    // Quick ascending beep
     createBeep(800, 0.1)
     setTimeout(() => createBeep(1000, 0.1), 100)
   }
 
   const playEndSound = () => {
-    // Bell-like sound with multiple frequencies
     createBeep(800, 0.5)
     setTimeout(() => createBeep(1000, 0.3), 50)
     setTimeout(() => createBeep(1200, 0.2), 100)
   }
 
   const playClickSound = () => {
-    // Short click sound
     createBeep(600, 0.05, 0.3)
-  }
-
-  const setVolume = (volume: number) => {
-    // This would be handled by the store
-    usePomodoroStore.getState().updateSettings({
-      sound: {
-        ...settings.sound,
-        volume: Math.max(0, Math.min(1, volume)),
-      },
-    })
   }
 
   return {
     playStartSound,
     playEndSound,
     playClickSound,
-    setVolume,
   }
 }
