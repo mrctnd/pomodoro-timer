@@ -42,47 +42,53 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
+        className="flex flex-col gap-8"
       >
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <Settings className="w-5 h-5 text-primary" />
+        <div className="flex items-center gap-4 border-b border-border/40 pb-6">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
+            <Settings className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Settings</h1>
-            <p className="text-sm text-muted-foreground">
-              Customize your Pomodoro experience
+            <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+            <p className="text-muted-foreground mt-1">
+              Customize your Chroniqo experience
             </p>
           </div>
         </div>
 
-        <TimerSettingsCard
-          settings={settings.timer}
-          onSave={handleSaveTimerSettings}
-        />
+        {/* 2-Column Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          {/* Left Column */}
+          <div className="flex flex-col gap-6">
+            <TimerSettingsCard
+              settings={settings.timer}
+              onSave={handleSaveTimerSettings}
+            />
+            <AppearanceSettingsCard />
+          </div>
 
-        <SoundSettingsCard
-          settings={settings.sound}
-          onSave={handleSaveSoundSettings}
-        />
-
-        <NotificationSettingsCard
-          settings={settings.notifications}
-          onSave={handleSaveNotificationSettings}
-        />
-
-        <AppearanceSettingsCard />
-
-        <DataManagementCard
-          onExport={exportData}
-          onImport={importData}
-          onReset={handleReset}
-        />
+          {/* Right Column */}
+          <div className="flex flex-col gap-6">
+            <SoundSettingsCard
+              settings={settings.sound}
+              onSave={handleSaveSoundSettings}
+            />
+            <NotificationSettingsCard
+              settings={settings.notifications}
+              onSave={handleSaveNotificationSettings}
+            />
+            <DataManagementCard
+              onExport={exportData}
+              onImport={importData}
+              onReset={handleReset}
+            />
+          </div>
+        </div>
       </motion.div>
     </div>
   )
