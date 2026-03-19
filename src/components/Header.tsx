@@ -91,13 +91,33 @@ export function Header() {
                 href="/"
                 className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity"
               >
-                <Image
-                  src={logo}
-                  alt="Pomodoro Logo"
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0 drop-shadow-sm"
+                >
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="16"
+                    className="fill-foreground"
+                    opacity="0.15"
+                  />
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="13"
+                    className="fill-foreground"
+                    opacity="0.1"
+                  />
+                  <path
+                    d="M18,4A14,14,0,1,0,32,18,14,14,0,0,0,18,4Zm5.4,18.53a1.2,1.2,0,0,1-1.67.33L16.6,19.2V10.5a1.2,1.2,0,0,1,2.4,0v7.3l4.07,2.76A1.2,1.2,0,0,1,23.4,22.53Z"
+                    className="fill-foreground"
+                  />
+                </svg>
                 <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent tracking-tighter">
                   Chroniqo
                 </span>
