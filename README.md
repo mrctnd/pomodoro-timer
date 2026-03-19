@@ -1,4 +1,4 @@
-# <img src="public/logo.png" width="35" align="center" /> Pomodoro Timer - Stay Focused
+# <img src="public/logo.svg" width="35" align="center" /> Pomodoro Timer - Stay Focused
 
 A modern, minimal, and highly usable Pomodoro timer web application built with Next.js 15, TypeScript, and Tailwind CSS v4. Features task management, detailed statistics, PWA support, and full accessibility compliance.
 

@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { usePomodoroStore } from '@/store/usePomodoro'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -76,6 +76,9 @@ export default function Home() {
     setMounted(true)
   }, [])
 
+  const timerState = usePomodoroStore((state) => state.timerState)
+  const isRunning = timerState === 'running'
+
   if (!mounted) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8">
@@ -104,45 +107,59 @@ export default function Home() {
         className="space-y-8"
       >
         {/* Timer Section - Centered */}
-        <div className="flex flex-col items-center gap-6">
-          <Timer />
-          <TimerControls />
+        <div className="flex justify-center">
+          <motion.div
+            layout
+            className="flex flex-col items-center gap-6 transition-all duration-500"
+            animate={{
+              scale: isRunning ? 1.05 : 1,
+              marginTop: isRunning ? '10vh' : '0',
+            }}
+          >
+            <Timer />
+            <TimerControls />
+          </motion.div>
         </div>
 
-        {/* Quick Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="grid grid-cols-3 gap-3 max-w-lg mx-auto"
-        >
-          {quickStats.map((stat) => (
-            <div
-              key={stat.key}
-              className="relative rounded-2xl border border-border/40 bg-background/50 backdrop-blur-sm p-4 text-center transition-all duration-200 hover:border-border/60 hover:shadow-sm"
+        <AnimatePresence mode="wait">
+          {!isRunning && (
+            <motion.div
+              key="quick-stats-and-tasks"
+              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+              animate={{ opacity: 1, height: 'auto', overflow: 'visible' }}
+              exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className="space-y-8"
             >
-              <div
-                className={`w-8 h-8 mx-auto mb-2 rounded-xl ${stat.bgColor} flex items-center justify-center`}
-              >
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto">
+                {quickStats.map((stat) => (
+                  <div
+                    key={stat.key}
+                    className="relative rounded-2xl border border-border/40 bg-background/50 backdrop-blur-sm p-4 text-center transition-all duration-200 hover:border-border/60 hover:shadow-sm"
+                  >
+                    <div
+                      className={`w-8 h-8 mx-auto mb-2 rounded-xl ${stat.bgColor} flex items-center justify-center`}
+                    >
+                      <stat.icon className={`w-4 h-4 ${stat.color}`} />
+                    </div>
+                    <div className="text-xl font-bold">
+                      {statValues[stat.key]}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="text-xl font-bold">{statValues[stat.key]}</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
 
-        {/* Task List */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="max-w-2xl mx-auto"
-        >
-          <TaskList />
-        </motion.div>
+              {/* Task List */}
+              <div className="max-w-2xl mx-auto">
+                <TaskList />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   )

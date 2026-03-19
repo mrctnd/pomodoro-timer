@@ -5,7 +5,7 @@ import { usePomodoroStore } from '@/store/usePomodoro'
 import { useAudio } from '@/hooks/useAudio'
 import { useNotifications } from '@/hooks/useNotifications'
 import { Play, Pause, RotateCcw, Coffee, Clock, Zap } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   getTimerModeLabel,
   getTimerModeColor,
@@ -74,35 +74,44 @@ export function TimerControls() {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Mode Selector - Pill shaped */}
-      <div className="flex gap-1.5 p-1.5 rounded-full bg-muted/50 backdrop-blur-sm border border-border/50">
-        {modeConfig.map(({ mode, label, icon: Icon }) => {
-          const isActive = currentMode === mode
-          const modeGradient = getTimerModeGradient(mode)
-          return (
-            <button
-              key={mode}
-              onClick={() => handleModeSwitch(mode)}
-              disabled={timerState === 'running'}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
-                isActive
-                  ? 'text-white shadow-lg'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-              style={
-                isActive
-                  ? {
-                      background: `linear-gradient(135deg, ${modeGradient.from}, ${modeGradient.to})`,
-                      boxShadow: `0 4px 20px ${getTimerModeColor(mode)}40`,
-                    }
-                  : undefined
-              }
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{label}</span>
-            </button>
-          )
-        })}
-      </div>
+      <AnimatePresence>
+        {timerState !== 'running' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, scale: 0.9 }}
+            animate={{ opacity: 1, height: 'auto', scale: 1 }}
+            exit={{ opacity: 0, height: 0, scale: 0.9, marginBottom: -24 }}
+            transition={{ duration: 0.3 }}
+            className="flex gap-1.5 p-1.5 rounded-full bg-muted/50 backdrop-blur-sm border border-border/50 overflow-hidden"
+          >
+            {modeConfig.map(({ mode, label, icon: Icon }) => {
+              const isActive = currentMode === mode
+              const modeGradient = getTimerModeGradient(mode)
+              return (
+                <button
+                  key={mode}
+                  onClick={() => handleModeSwitch(mode)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    isActive
+                      ? 'text-white shadow-lg'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  style={
+                    isActive
+                      ? {
+                          background: `linear-gradient(135deg, ${modeGradient.from}, ${modeGradient.to})`,
+                          boxShadow: `0 4px 20px ${getTimerModeColor(mode)}40`,
+                        }
+                      : undefined
+                  }
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{label}</span>
+                </button>
+              )
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Controls */}
       <div className="flex items-center gap-3">
