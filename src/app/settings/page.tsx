@@ -44,9 +44,8 @@ export default function SettingsPage() {
   return (
     <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
         className="flex flex-col gap-8"
       >
         {/* Header */}

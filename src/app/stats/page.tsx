@@ -73,9 +73,8 @@ export default function StatsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
         className="space-y-6"
       >
         {/* Header */}
