@@ -15,6 +15,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import logo from '../../public/logo.svg'
 import { usePathname } from 'next/navigation'
 
 export function Header() {
@@ -91,7 +92,7 @@ export function Header() {
                 className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity"
               >
                 <Image
-                  src="/logo.svg"
+                  src={logo}
                   alt="Pomodoro Logo"
                   width={32}
                   height={32}

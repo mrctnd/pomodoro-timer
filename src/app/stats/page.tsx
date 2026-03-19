@@ -12,8 +12,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   PieChart,
   Pie,
   Cell,
@@ -130,62 +130,111 @@ export default function StatsPage() {
 
           <TabsContent value="daily" className="space-y-4">
             <div className="grid gap-4 lg:grid-cols-2">
-              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
-                <h3 className="text-sm font-semibold mb-4 text-muted-foreground">
+              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm overflow-hidden text-muted-foreground transition-colors">
+                <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                   Daily Sessions (Last 30 Days)
                 </h3>
                 <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={dailyStats}>
+                  <BarChart
+                    data={dailyStats}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
                     <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="hsl(var(--border))"
-                      strokeOpacity={0.5}
+                      strokeDasharray="4 4"
+                      vertical={false}
+                      stroke="currentColor"
+                      strokeOpacity={0.1}
                     />
                     <XAxis
                       dataKey="date"
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <YAxis
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <Tooltip
+                      cursor={{ fill: 'currentColor', opacity: 0.05 }}
                       contentStyle={{
                         borderRadius: '12px',
                         border: '1px solid hsl(var(--border))',
                         backgroundColor: 'hsl(var(--background))',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
                     <Bar
                       dataKey="sessions"
                       fill="#3b82f6"
                       radius={[6, 6, 0, 0]}
+                      maxBarSize={40}
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
-                <h3 className="text-sm font-semibold mb-4 text-muted-foreground">
+              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm overflow-hidden text-muted-foreground transition-colors">
+                <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                   Daily Focus Time (Minutes)
                 </h3>
                 <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={dailyStats}>
+                  <AreaChart
+                    data={dailyStats}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id="colorFocus"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#10b981"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#10b981"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="hsl(var(--border))"
-                      strokeOpacity={0.5}
+                      strokeDasharray="4 4"
+                      vertical={false}
+                      stroke="currentColor"
+                      strokeOpacity={0.1}
                     />
                     <XAxis
                       dataKey="date"
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <YAxis
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <Tooltip
                       contentStyle={{
@@ -193,58 +242,81 @@ export default function StatsPage() {
                         border: '1px solid hsl(var(--border))',
                         backgroundColor: 'hsl(var(--background))',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
-                    <Line
+                    <Area
                       type="monotone"
                       dataKey="focusTime"
                       stroke="#10b981"
-                      strokeWidth={2.5}
-                      dot={{ r: 3, fill: '#10b981' }}
-                      activeDot={{ r: 5 }}
+                      strokeWidth={3}
+                      fillOpacity={1}
+                      fill="url(#colorFocus)"
+                      activeDot={{
+                        r: 6,
+                        fill: '#10b981',
+                        stroke: 'hsl(var(--background))',
+                        strokeWidth: 2,
+                      }}
                     />
-                  </LineChart>
+                  </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
           </TabsContent>
 
           <TabsContent value="weekly" className="space-y-4">
-            <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
-              <h3 className="text-sm font-semibold mb-4 text-muted-foreground">
+            <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm overflow-hidden text-muted-foreground transition-colors">
+              <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                 Weekly Progress (Last 12 Weeks)
               </h3>
               <ResponsiveContainer width="100%" height={380}>
-                <BarChart data={weeklyStats}>
+                <BarChart
+                  data={weeklyStats}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 40 }}
+                >
                   <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="hsl(var(--border))"
-                    strokeOpacity={0.5}
+                    strokeDasharray="4 4"
+                    vertical={false}
+                    stroke="currentColor"
+                    strokeOpacity={0.1}
                   />
                   <XAxis
                     dataKey="week"
                     angle={-45}
                     textAnchor="end"
                     height={60}
-                    tick={{ fontSize: 11 }}
-                    stroke="hsl(var(--muted-foreground))"
+                    tick={{ fontSize: 11, fill: 'currentColor' }}
+                    stroke="currentColor"
+                    strokeOpacity={0.2}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickLine={false}
                   />
                   <YAxis
-                    tick={{ fontSize: 11 }}
-                    stroke="hsl(var(--muted-foreground))"
+                    tick={{ fontSize: 11, fill: 'currentColor' }}
+                    stroke="currentColor"
+                    strokeOpacity={0.2}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickLine={false}
                   />
                   <Tooltip
+                    cursor={{ fill: 'currentColor', opacity: 0.05 }}
                     contentStyle={{
                       borderRadius: '12px',
                       border: '1px solid hsl(var(--border))',
                       backgroundColor: 'hsl(var(--background))',
                       boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                      color: 'hsl(var(--foreground))',
                     }}
                   />
                   <Bar
                     dataKey="sessions"
-                    fill="#3b82f6"
+                    fill="#6366f1"
                     radius={[6, 6, 0, 0]}
+                    maxBarSize={50}
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -253,48 +325,66 @@ export default function StatsPage() {
 
           <TabsContent value="tasks" className="space-y-4">
             <div className="grid gap-4 lg:grid-cols-2">
-              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
-                <h3 className="text-sm font-semibold mb-4 text-muted-foreground">
+              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm overflow-hidden text-muted-foreground transition-colors">
+                <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-purple-500"></span>
                   Top Tasks by Pomodoros
                 </h3>
                 <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={taskStats} layout="horizontal">
+                  <BarChart
+                    data={taskStats}
+                    layout="horizontal"
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
                     <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="hsl(var(--border))"
-                      strokeOpacity={0.5}
+                      strokeDasharray="4 4"
+                      vertical={false}
+                      stroke="currentColor"
+                      strokeOpacity={0.1}
                     />
                     <XAxis
                       type="number"
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={100}
-                      tick={{ fontSize: 11 }}
-                      stroke="hsl(var(--muted-foreground))"
+                      tick={{ fontSize: 11, fill: 'currentColor' }}
+                      stroke="currentColor"
+                      strokeOpacity={0.2}
+                      tickMargin={10}
+                      axisLine={false}
+                      tickLine={false}
                     />
                     <Tooltip
+                      cursor={{ fill: 'currentColor', opacity: 0.05 }}
                       contentStyle={{
                         borderRadius: '12px',
                         border: '1px solid hsl(var(--border))',
                         backgroundColor: 'hsl(var(--background))',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
                     <Bar
                       dataKey="pomodoros"
-                      fill="#8b5cf6"
+                      fill="#a855f7"
                       radius={[0, 6, 6, 0]}
+                      maxBarSize={30}
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm">
-                <h3 className="text-sm font-semibold mb-4 text-muted-foreground">
+              <div className="rounded-2xl border border-border/40 bg-gradient-to-br from-background to-muted/10 p-6 shadow-sm overflow-hidden text-muted-foreground transition-colors">
+                <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-500"></span>
                   Session Types
                 </h3>
                 <ResponsiveContainer width="100%" height={280}>
@@ -311,7 +401,7 @@ export default function StatsPage() {
                       innerRadius={50}
                       fill="#8884d8"
                       dataKey="value"
-                      strokeWidth={2}
+                      strokeWidth={3}
                       stroke="hsl(var(--background))"
                     >
                       {modeStats.map((entry, index) => (
@@ -324,6 +414,7 @@ export default function StatsPage() {
                         border: '1px solid hsl(var(--border))',
                         backgroundColor: 'hsl(var(--background))',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        color: 'hsl(var(--foreground))',
                       }}
                     />
                   </PieChart>
