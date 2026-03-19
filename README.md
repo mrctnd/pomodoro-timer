@@ -1,10 +1,10 @@
-# <img src="public/logo.svg" width="35" align="center" /> Pomodoro Timer - Stay Focused
+# <img src="public/logo.svg" width="35" align="center" /> Chroniqo - Stay Focused
 
 A modern, minimal, and highly usable Pomodoro timer web application built with Next.js 15, TypeScript, and Tailwind CSS v4. Features task management, detailed statistics, PWA support, and full accessibility compliance.
 
 > 🤖 **Built with AI**: This project was developed using GitHub Copilot and AI assistance to demonstrate modern web development practices and create a production-ready application.
 
-[Pomodoro Timer](https://mrctnd.github.io/pomodoro-timer/)
+[Chroniqo](https://mrctnd.github.io/pomodoro-timer/)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)

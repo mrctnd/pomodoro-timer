@@ -13,10 +13,11 @@ const inter = Inter({
 const basePath = process.env.GITHUB_ACTIONS === 'true' ? '/pomodoro-timer' : ''
 
 export const metadata: Metadata = {
-  title: 'Pomodoro Timer - Stay Focused',
+  title: 'Chroniqo - Stay Focused',
   description:
     'A modern, minimal Pomodoro timer to boost your productivity with task management, statistics, and focus modes.',
   keywords: [
+    'chroniqo',
     'pomodoro',
     'timer',
     'productivity',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     'tasks',
     'time management',
   ],
-  authors: [{ name: 'Pomodoro App' }],
+  authors: [{ name: 'Chroniqo App' }],
   manifest: `${basePath}/manifest.webmanifest`,
   icons: {
     icon: `${basePath}/logo.svg`,
@@ -32,15 +33,15 @@ export const metadata: Metadata = {
     apple: `${basePath}/logo.svg`,
   },
   openGraph: {
-    title: 'Pomodoro Timer - Stay Focused',
+    title: 'Chroniqo - Stay Focused',
     description: 'A modern, minimal Pomodoro timer to boost your productivity',
     url: 'https://mrctnd.github.io/pomodoro-timer',
-    siteName: 'Pomodoro Timer',
+    siteName: 'Chroniqo',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pomodoro Timer - Stay Focused',
+    title: 'Chroniqo - Stay Focused',
     description: 'A modern, minimal Pomodoro timer to boost your productivity',
   },
 }

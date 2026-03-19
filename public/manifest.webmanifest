@@ -1,6 +1,6 @@
 {
-  "name": "Pomodoro Timer - Stay Focused",
-  "short_name": "Pomodoro",
+  "name": "Chroniqo - Stay Focused",
+  "short_name": "Chroniqo",
   "description": "A modern, minimal Pomodoro timer to boost your productivity with task management, statistics, and focus modes.",
   "start_url": "/",
   "display": "standalone",

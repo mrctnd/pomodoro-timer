@@ -98,8 +98,8 @@ export function Header() {
                   height={32}
                   className="object-contain"
                 />
-                <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                  Pomodoro
+                <span className="font-bold text-lg bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent tracking-tighter">
+                  Chroniqo
                 </span>
               </Link>
 
