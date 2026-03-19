@@ -10,6 +10,8 @@ const inter = Inter({
   variable: '--font-sans',
 })
 
+const basePath = process.env.GITHUB_ACTIONS === 'true' ? '/pomodoro-timer' : ''
+
 export const metadata: Metadata = {
   title: 'Pomodoro Timer - Stay Focused',
   description:
@@ -23,11 +25,11 @@ export const metadata: Metadata = {
     'time management',
   ],
   authors: [{ name: 'Pomodoro App' }],
-  manifest: '/manifest.webmanifest',
+  manifest: `${basePath}/manifest.webmanifest`,
   icons: {
-    icon: '/logo.svg',
-    shortcut: '/logo.svg',
-    apple: '/logo.svg',
+    icon: `${basePath}/logo.svg`,
+    shortcut: `${basePath}/logo.svg`,
+    apple: `${basePath}/logo.svg`,
   },
   openGraph: {
     title: 'Pomodoro Timer - Stay Focused',
