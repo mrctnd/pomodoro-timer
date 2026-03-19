@@ -1,5 +1,11 @@
 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="18" cy="18" r="16" fill="#ef4444" opacity="0.15"/>
-  <circle cx="18" cy="18" r="13" fill="#ef4444" opacity="0.1"/>
-  <path d="M18,4A14,14,0,1,0,32,18,14,14,0,0,0,18,4Zm5.4,18.53a1.2,1.2,0,0,1-1.67.33L16.6,19.2V10.5a1.2,1.2,0,0,1,2.4,0v7.3l4.07,2.76A1.2,1.2,0,0,1,23.4,22.53Z" fill="#ef4444"/>
+  <style>
+    .dynamic-fill { fill: #0f0f0f; }
+    @media (prefers-color-scheme: dark) {
+      .dynamic-fill { fill: #ffffff; }
+    }
+  </style>
+  <circle cx="18" cy="18" r="16" class="dynamic-fill" opacity="0.15"/>
+  <circle cx="18" cy="18" r="13" class="dynamic-fill" opacity="0.1"/>
+  <path d="M18,4A14,14,0,1,0,32,18,14,14,0,0,0,18,4Zm5.4,18.53a1.2,1.2,0,0,1-1.67.33L16.6,19.2V10.5a1.2,1.2,0,0,1,2.4,0v7.3l4.07,2.76A1.2,1.2,0,0,1,23.4,22.53Z" class="dynamic-fill"/>
 </svg>
