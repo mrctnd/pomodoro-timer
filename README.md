@@ -13,11 +13,40 @@ A modern, minimal, and highly usable Pomodoro timer web application built with N
 
 ## 📸 Screenshots
 
-### Main Timer Interface
+### ⏱️ Main Interface
 
-![Timer Interface](src/screenshots/screenshot-1.png)
-![Timer Interface](src/screenshots/screenshot-2.png)
-![Timer Interface](src/screenshots/screenshot-3.png)
+<p align="center">
+  <img src="src/screenshots/main-page.png" width="48%" alt="Main Timer (Light Mode)" />
+  <img src="src/screenshots/main-page-dark.png" width="48%" alt="Main Timer (Dark Mode)" />
+</p>
+
+### 🎯 Focus & Break Modes
+
+<p align="center">
+  <img src="src/screenshots/main-page-2.png" width="48%" alt="Short Break" />
+  <img src="src/screenshots/main-page-3-dark.png" width="48%" alt="Long Break (Dark Mode)" />
+</p>
+
+### 📈 Statistics & Analytics
+
+<p align="center">
+  <img src="src/screenshots/stats-daily-page.png" width="48%" alt="Daily Stats" />
+  <img src="src/screenshots/stats--weekly-page-dark.png" width="48%" alt="Weekly Stats (Dark Mode)" />
+</p>
+
+### ⚙️ Settings
+
+<p align="center">
+  <img src="src/screenshots/settings.png" width="48%" alt="Settings" />
+  <img src="src/screenshots/settings-dark.png" width="48%" alt="Settings (Dark Mode)" />
+</p>
+
+### 🕰️ Minimal Timer View
+
+<p align="center">
+  <img src="src/screenshots/timer-only.png" width="48%" alt="Timer Focused" />
+  <img src="src/screenshots/timer-only-dark.png" width="48%" alt="Timer Focused (Dark Mode)" />
+</p>
 
 ## ✨ Features
 
