@@ -111,16 +111,12 @@ export function Timer() {
 
         {/* Center content */}
         <div className="relative z-20 flex flex-col items-center gap-2">
-          <motion.div
-            key={`${timeLeft}-${currentMode}`}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="text-[4rem] leading-none font-bold font-mono tracking-tight"
+          <div
+            className="text-[4rem] leading-none font-bold font-mono tracking-tight transition-colors duration-500"
             style={{ color: modeColor }}
           >
             {formatTime(timeLeft)}
-          </motion.div>
+          </div>
           <div className="text-sm font-medium text-muted-foreground/80 tracking-wide">
             {timerState === 'running'
               ? 'Focus time'

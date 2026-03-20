@@ -77,10 +77,10 @@ export function TimerControls() {
       <AnimatePresence>
         {timerState !== 'running' && (
           <motion.div
-            initial={{ opacity: 0, height: 0, scale: 0.9 }}
-            animate={{ opacity: 1, height: 'auto', scale: 1 }}
-            exit={{ opacity: 0, height: 0, scale: 0.9, marginBottom: -24 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0, marginBottom: -24 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             className="flex gap-1.5 p-1.5 rounded-full bg-muted/50 backdrop-blur-sm border border-border/50 overflow-hidden"
           >
             {modeConfig.map(({ mode, label, icon: Icon }) => {
